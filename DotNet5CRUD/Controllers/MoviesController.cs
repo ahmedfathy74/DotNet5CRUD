@@ -2,6 +2,7 @@
 using DotNet5CRUD.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,17 +14,19 @@ namespace DotNet5CRUD.Controllers
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IToastNotification _toastNotification;
         private new List<string> _allowedExtenstions = new List<string> { ".jpg", ".png" };
         private long _maxAllowedPosterSize = 1048576;
 
-        public MoviesController(ApplicationDbContext context)
+        public MoviesController(ApplicationDbContext context, IToastNotification toastNotification)
         {
             _context = context;
+            _toastNotification = toastNotification;
         }
 
         public async Task<IActionResult> Index()
         {
-            var movies = await _context.Movies.ToListAsync();
+            var movies = await _context.Movies.OrderByDescending(x=>x.Rate).ToListAsync();
             return View(movies);
         }
 
@@ -87,6 +90,7 @@ namespace DotNet5CRUD.Controllers
             _context.Movies.Add(movies);
             _context.SaveChanges();
 
+            _toastNotification.AddSuccessToastMessage("Movie Created Successfully");
             return RedirectToAction(nameof(Index));
         }
 
@@ -166,7 +170,44 @@ namespace DotNet5CRUD.Controllers
 
             _context.SaveChanges();
 
+            _toastNotification.AddSuccessToastMessage("Movie Updated Successfully");
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id is null) 
+            {
+                return BadRequest();
+            }
+
+            var movie = await _context.Movies.Include(m=>m.Genre).SingleOrDefaultAsync(x=>x.Id==id);
+
+            if(movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest();
+            }
+
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            _context.Movies.Remove(movie);
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }
