@@ -15,5 +15,7 @@ namespace DotNet5CRUD.Models
 
         [Required, MaxLength(100)]
         public string Name { get; set; }
+
+        public virtual List<Movie>? Movies { get; set; }
     }
 }
