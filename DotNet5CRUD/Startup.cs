@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NToastNotify;
+using DotNet5CRUD.Repositories.Base;
+using DotNet5CRUD.Repositories;
+using DotNet5CRUD.Services.MovieService;
 
 namespace DotNet5CRUD
 {
@@ -29,6 +32,9 @@ namespace DotNet5CRUD
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            services.AddScoped(typeof(IMoiveService), typeof(MoiveService));
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
             {
