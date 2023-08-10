@@ -54,7 +54,7 @@
         function onchangeDropdown() {
             $("#myDropdown").change(function () {
                 var selectedOption = $(this).children("option:selected").val();
-                alert("You selected: " + selectedOption);
+                //alert("You selected: " + selectedOption);
                // @Url.Action("ShowMovies", "Geners")
                 $.ajax({
                     url: '/Geners/ShowMovies/' + selectedOption,
@@ -66,9 +66,6 @@
                         toastr.error('Something went Wrong!');
                     }
                 });
-                //document.getElementById("txtSearch").value = selectedOption;
-                //GetWithSearch('@Url.Action("Index", "Reconciliation")', '');
-                //console.log(document.getElementById("txtSearch").value);
 
             });
 
