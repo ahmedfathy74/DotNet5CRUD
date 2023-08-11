@@ -66,7 +66,7 @@ namespace DotNet5CRUD.Repositories
             return await RelatedEntities.ToListAsync();
         }
 
-        public async Task<T> GetByID(int id)
+        public async Task<T> GetByID(int? id)
         {
             return await _context.Set<T>().FindAsync(id);
         }

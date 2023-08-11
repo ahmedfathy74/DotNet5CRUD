@@ -71,7 +71,7 @@ namespace DotNet5CRUD.Services.MovieService
             }
         }
 
-        public async Task<Movie> GetMovieByID(int MovieId)
+        public async Task<Movie> GetMovieByID(int? MovieId)
         {
             return await _movieService.GetByID(MovieId);
         }

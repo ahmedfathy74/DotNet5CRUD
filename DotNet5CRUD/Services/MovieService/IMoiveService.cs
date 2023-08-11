@@ -14,6 +14,6 @@ namespace DotNet5CRUD.Services.MovieService
         Task addMovie(Movie movie);
         Task<Movie> updateMovie(Movie movie);
         Task deleteMovie(int id);
-        Task<Movie> GetMovieByID(int MovieId);
+        Task<Movie> GetMovieByID(int? MovieId);
     }
 }

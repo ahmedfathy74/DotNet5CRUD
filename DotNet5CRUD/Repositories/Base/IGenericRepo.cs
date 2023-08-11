@@ -11,7 +11,7 @@ namespace DotNet5CRUD.Repositories.Base
         Task Add(T entity);
         Task Delete(int ID);
         Task<T> Update(T entity);
-        Task<T> GetByID(int id);
+        Task<T> GetByID(int? id);
         Task<IEnumerable<T>> GetAllEntries(string[]? includes = null);
         Task<IEnumerable<T>> GetAllEntries<TKey>(Expression<Func<T, TKey>> orderBy = null, string[] includes = null);
     }

@@ -235,10 +235,9 @@ namespace DotNet5CRUD.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var movies = await _moiveService.GetAllMovies();
-            //return View(movies.OrderByDescending(m=>m.Rate).ToList());
             var movies = await _moiveService.GetAllMovies(m => m.Rate);
-            return View(movies);
+            var descendingMovies = movies.Reverse().ToList();
+            return View(descendingMovies);
         }
 
         public async Task<IActionResult> Create()
@@ -310,7 +309,7 @@ namespace DotNet5CRUD.Controllers
             if (id == null)
                 return BadRequest();
 
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _moiveService.GetMovieByID(id);
 
             if (movie == null)
                 return NotFound();
@@ -339,7 +338,7 @@ namespace DotNet5CRUD.Controllers
                 return View("MovieForm", model);
             }
 
-            var movie = await _context.Movies.FindAsync(model.Id);
+            var movie = await _moiveService.GetMovieByID(model.Id);
 
             if (movie == null)
                 return NotFound();
@@ -379,8 +378,7 @@ namespace DotNet5CRUD.Controllers
             movie.Rate = model.Rate;
             movie.Storeline = model.Storeline;
 
-            _context.SaveChanges();
-
+            await _moiveService.updateMovie(movie);
             _toastNotification.AddSuccessToastMessage("Movie Updated Successfully");
             return RedirectToAction(nameof(Index));
         }
@@ -392,7 +390,8 @@ namespace DotNet5CRUD.Controllers
                 return BadRequest();
             }
 
-            var movie = await _context.Movies.Include(m => m.Genre).SingleOrDefaultAsync(x => x.Id == id);
+            var movies = await _moiveService.GetAllMovies(new[] { "Genre" });
+            var movie = movies.SingleOrDefault(x => x.Id == id);
 
             if (movie == null)
             {
@@ -408,16 +407,13 @@ namespace DotNet5CRUD.Controllers
                 return BadRequest();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _moiveService.GetMovieByID(id);
 
             if (movie == null)
             {
                 return NotFound();
             }
-
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
-
+            await _moiveService.deleteMovie(movie.Id);
             return Ok();
         }
     }

@@ -14,6 +14,7 @@ using NToastNotify;
 using DotNet5CRUD.Repositories.Base;
 using DotNet5CRUD.Repositories;
 using DotNet5CRUD.Services.MovieService;
+using DotNet5CRUD.Services.GenreService;
 
 namespace DotNet5CRUD
 {
@@ -35,6 +36,7 @@ namespace DotNet5CRUD
 
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped(typeof(IMoiveService), typeof(MoiveService));
+            services.AddScoped(typeof(IGenreService), typeof(GenreService));
 
             services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
             {

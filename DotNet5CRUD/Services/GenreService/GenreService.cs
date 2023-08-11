@@ -71,7 +71,7 @@ namespace DotNet5CRUD.Services.GenreService
             }
         }
 
-        public async Task<Genre> GetGenreByID(int GenreId)
+        public async Task<Genre> GetGenreByID(int? GenreId)
         {
             return await _GenreService.GetByID(GenreId);
         }

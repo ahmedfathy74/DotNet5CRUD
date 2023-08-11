@@ -16,6 +16,6 @@ namespace DotNet5CRUD.Services.GenreService
         Task addGenre(Genre genre);
         Task<Genre> updateGenre(Genre genre);
         Task deleteGenre(int id);
-        Task<Genre> GetGenreByID(int genreId);
+        Task<Genre> GetGenreByID(int? genreId);
     }
 }
